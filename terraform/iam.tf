@@ -44,3 +44,52 @@ resource "aws_iam_role_policy_attachment" "ELK-LogStreamerRole-Attach-LogStreame
     policy_arn = "${aws_iam_policy.ELK-LogStreamer.arn}"
 }
 
+resource "aws_iam_role" "ELK-SolutionHelperRole" {
+  name = "ELK-SolutionHelperRole"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "lambda.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "ELK-LambdaLoader" {
+  name   = "ELK-LambdaLoader"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"
+        },
+        {
+            "Effect":   "Allow",
+            "Action":   "ec2:DescribeImages",
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "ELK-SolutionHelperRole-Attach-ELK-LambdaLoader" {
+    role       = "${aws_iam_role.ELK-SolutionHelperRole.name}"
+    policy_arn = "${aws_iam_policy.ELK-LambdaLoader.arn}"
+}

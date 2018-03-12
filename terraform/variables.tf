@@ -1,7 +1,10 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_availability_zones" "available" {}
+
 #############################################################################
 # General vars
+
 variable region {
   default     = "ap-southeast-2"
   description = "The AWS region where we want create the resources"
@@ -76,6 +79,13 @@ variable Subnet2 {
   default     = "10.249.249.0/24"
 }
 
+variable AmiLinux {
+  default     = "ami-942dd1f6"
+}
+
+#############################################################################
+# Mappings
+
 variable InstanceMap {
   type        = "map"
   default = {
@@ -134,6 +144,7 @@ variable SourceCode {
 
 #############################################################################
 # Outputs
+
 /*
 output KibanaURL {
   # Kibana dashboard URL

@@ -12,6 +12,7 @@ resource "aws_subnet" "PublicSubnetA" {
   vpc_id     = "${aws_vpc.PrimerVPC.id}"
   cidr_block = "${var.Subnet1}"
   map_public_ip_on_launch = true
+  availability_zone = "${data.aws_availability_zones.available.names[0]}"
   tags {
     Name = "ELK-SubnetA"
   }
@@ -21,6 +22,7 @@ resource "aws_subnet" "PublicSubnetB" {
   vpc_id     = "${aws_vpc.PrimerVPC.id}"
   cidr_block = "${var.Subnet2}"
   map_public_ip_on_launch = true
+  availability_zone = "${data.aws_availability_zones.available.names[1]}"
   tags {
     Name = "ELK-SubnetB"
   }
