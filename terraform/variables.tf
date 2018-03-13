@@ -89,9 +89,12 @@ variable AmiLinux {
 variable InstanceMap {
   type        = "map"
   default = {
-    "t2.micro"        = "{\"Arch\":\"HVM64\"}"
-    "ap-southeast-2"  = "{\"instancetype\":\"t2.micro\"}"
-
+#    "t2.micro"        = "{\"Arch\":\"HVM64\"}"
+#    "ap-southeast-2"  = "{\"instancetype\":\"t2.micro\"}"
+    "ap-southeast-2"  = {
+      "InstanceType"  = "t2.micro",
+      "AMI"           = "ami-43874721"
+    }
   }
 }
 
@@ -158,7 +161,7 @@ output DomainEndpoint {
 
 output AmiId {
   # Ami Id vended in template
-  value = !GetAtt AMIInfo.Id
+  value = "${lookup(var.InstanceMap[var.region], "AMI")}"
 }
 
 output MasterRole {

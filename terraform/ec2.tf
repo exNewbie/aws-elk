@@ -108,19 +108,57 @@ Targets :
       - Id: !Sub ${ProxyBHost}
         Port: 80
 */
+
+############################################################
+# Cloud Init template
+
+data "template_cloudinit_config" "config" {
+  gzip          = false
+  base64_encode = false
+/*
+  part {
+    filename     = "init.cfg"
+    content_type = "text/part-handler"
+    content      = "${data.template_file.script.rendered}"
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content      = "baz"
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content      = "ffbaz"
+  }
+*/
+  part {
+    content = "#cloud-config\n---\npackages:\n - nginx"
+  }
+}
+
 ############################################################
 # EC2 instance
-/*
+
 resource "aws_instance" "ProxyAHost" {
-  ami           = "${lookup(var.InstanceMap, var.regioni, "instancetype")}"
-  instance_type = "${lookup(var.InstanceMap, var.regioni, "instancetype")}"
-  associate_public_ip_address = "true"
-  subnet_id = "${aws_subnet.PublicAZA.id}"
-  vpc_security_group_ids = ["${aws_security_group.FrontEnd.id}"]
-  key_name = "${var.key_name}"
+  ami                           = "${lookup(var.InstanceMap[var.region], "AMI")}"
+  instance_type                 = "${lookup(var.InstanceMap[var.region], "InstanceType")}"
+  key_name                      = "${var.KeyName}"
+  vpc_security_group_ids        = ["${aws_security_group.ProxyServerSecurityGroup.id}"]
+  associate_public_ip_address   = "true"
+  subnet_id                     = "${aws_subnet.PublicSubnetA.id}"
+
+#  network_interface {
+#    device_index          = 0
+#    delete_on_termination = "true"
+#  }
+
   tags {
-        Name = "phpapp"
+        Name = "ELK-ProxyAHost"
   }
+
+  user_data = "${data.template_cloudinit_config.config.rendered}"
+/*
   user_data = <<HEREDOC
   #!/bin/bash
   yum update -y
@@ -135,5 +173,5 @@ resource "aws_instance" "ProxyAHost" {
   echo "\$conn->close(); " >> /var/www/html/calldb.php
   echo "?>" >> /var/www/html/calldb.php
 HEREDOC
-}
 */
+}
