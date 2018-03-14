@@ -55,10 +55,16 @@ variable KeyName {
   default     = "aws-workstation"
 }
 
+variable TrustedLocation {
+  type        = "list"
+  description = "IP address range that can SSH into Nginx proxy servers"
+  default     = [ "49.255.176.150/32", "52.62.119.220/32" ]
+}
+
 variable SSHLocation {
   type        = "string"
   description = "IP address range that can SSH into Nginx proxy servers"
-  default     = "0.0.0.0/0"
+  default     = "122.108.210.113/32"
 }
 
 variable VPCCidrP {
