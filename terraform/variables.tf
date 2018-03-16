@@ -25,10 +25,10 @@ variable DOMAINNAME {
 }
 
 variable ClusterSize {
-#  type        = "string"
+  type        = "string"
   description = "Amazon ES cluster size - tiny (1 data node), small (2 data nodes), medium (4 data nodes), large (10 data nodes)"
-#  default     = "tiny"
-  default     = [ "tiny", "small", "medium", "large" ]
+  default     = "tiny"
+#  default     = [ "tiny", "small", "medium", "large" ]
 }
 
 variable ProxyUsername {
@@ -188,5 +188,9 @@ output LambdaArn {
 output ClusterSize {
   # Cluster size for the deployed ES Domain
   value: !Sub ${ClusterSize}
+}
+
+output instance_type {
+  value = "${lookup(var.InstanceSizing["elasticsearch"], var.ClusterSize)}"
 }
 */

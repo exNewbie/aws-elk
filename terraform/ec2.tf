@@ -161,3 +161,15 @@ resource "aws_instance" "ProxyAHost" {
 HEREDOC
 */
 }
+
+############################################################
+# Elastic IP
+resource "aws_eip" "ProxyAEIP" {
+  vpc = true
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = "${aws_instance.ProxyAHost.id}"
+  allocation_id = "${aws_eip.ProxyAEIP.id}"
+}
+
