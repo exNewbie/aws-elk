@@ -41,7 +41,7 @@ resource "aws_elasticsearch_domain" "ELK-ElasticsearchAWSLogs" {
             "Resource": "*",
             "Condition": {
                 "IpAddress": {
-                  "aws:SourceIp": [ "${aws_eip.ProxyAEIP.public_ip}/32", "${aws_eip.ProxyBEIP.public_ip}/32" ]
+                  "aws:SourceIp": [ "${aws_eip.ProxyAEIP.public_ip}/32" ]
                 }
             }
         }

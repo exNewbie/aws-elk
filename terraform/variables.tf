@@ -154,12 +154,12 @@ variable SourceCode {
 #############################################################################
 # Outputs
 
-/*
 output KibanaURL {
   # Kibana dashboard URL
-  value = !Sub http://${ApplicationLoadBalancer.DNSName}/_plugin/kibana/
+  value = "http://${aws_lb.ApplicationLoadBalancer.dns_name}/_plugin/kibana/"
 }
 
+/*
 output DomainEndpoint {
   # ES domain endpoint URL
   value = !Sub ${ElasticsearchAWSLogs.DomainEndpoint}

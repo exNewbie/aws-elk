@@ -115,13 +115,11 @@ resource "aws_lb_target_group" "ALBTargetGroup" {
   }
 }
 
-/*
-Targets :
-      - Id: !Sub ${ProxyAHost}
-        Port: 80
-      - Id: !Sub ${ProxyBHost}
-        Port: 80
-*/
+resource "aws_lb_target_group_attachment" "ALBTargetGroupAttach" {
+  target_group_arn = "${aws_lb_target_group.ALBTargetGroup.arn}"
+  target_id        = "${aws_instance.ProxyAHost.id}"
+  port             = 80
+}
 
 ############################################################
 # EC2 instance
