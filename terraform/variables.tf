@@ -21,72 +21,61 @@ provider "aws" {
 variable DOMAINNAME {
   type        = "string"
   description = "Name for the Amazon ES domain that this template will create. Domain names must start with a lowercase letter and must be between 3 and 28 characters. Valid characters are a-z (lowercase only), 0-9, and - (hyphen)"
-  default     = "elk"
 }
 
 variable ClusterSize {
   type        = "string"
   description = "Amazon ES cluster size - tiny (1 data node), small (2 data nodes), medium (4 data nodes), large (10 data nodes)"
-  default     = "tiny"
 #  default     = [ "tiny", "small", "medium", "large" ]
 }
 
 variable ProxyUsername {
   type        = "string"
   description = "User name for kibana proxy servers"
-  default     = "admin"
 }
 
 variable ProxyPass {
   type        = "string"
   description = "Password for dashboard access via the proxy server. Must be six characters or longer, and must contain one uppercase letter, one lower case letter, and a special character (!@#$%^&+)"
-  default     = "MyPassWord"
 }
 
 variable SpokeAccounts {
   type        = "list"
   description = "Account IDs which you want to allow for centralized logging (comma separated list eg. 11111111,22222222)"
-  default     = [ "914347413456", "823686041507" ]
 }
 
 variable KeyName {
   type        = "string"
   description = "Existing Amazon EC2 key pair for SSH access to the proxy and web servers"
-  default     = "aws-workstation"
 }
 
 variable TrustedLocation {
   type        = "list"
   description = "IP address range that can SSH into Nginx proxy servers"
-  default     = [ "49.255.176.150/32", "52.62.119.220/32" ]
 }
 
 variable SSHLocation {
   type        = "string"
   description = "IP address range that can SSH into Nginx proxy servers"
-  default     = "122.108.210.113/32"
 }
 
 variable VPCCidrP {
   type        = "string"
   description = "CIDR block for VPC"
-  default     = "10.249.0.0/16"
 }
 
 variable Subnet1 {
   type        = "string"
   description = "IP address range for subnet created in AZ1"
-  default     = "10.249.250.0/24"
 }
 
 variable Subnet2 {
   type        = "string"
   description = "IP address range for subnet created in AZ2"
-  default     = "10.249.249.0/24"
 }
 
 variable AmiLinux {
-  default     = "ami-942dd1f6"
+  type        = "string"
 }
 
 #############################################################################
@@ -95,8 +84,6 @@ variable AmiLinux {
 variable InstanceMap {
   type        = "map"
   default = {
-#    "t2.micro"        = "{\"Arch\":\"HVM64\"}"
-#    "ap-southeast-2"  = "{\"instancetype\":\"t2.micro\"}"
     "ap-southeast-2"  = {
       "InstanceType"  = "t2.micro",
       "AMI"           = "ami-43874721"
