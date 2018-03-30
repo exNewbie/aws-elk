@@ -1,0 +1,13 @@
+DOMAINNAME = "elk"
+ClusterSize = "tiny"
+ProxyUsername = "admin"
+ProxyPass = "MyPassWord"
+SpokeAccounts = [ "914xxxxxx456", "823xxxxxx507" ]
+KeyName = "aws-workstation"
+TrustedLocation = [ "123.456.78.910/32", "987.654.3.210/32" ]
+SSHLocation   = "987.654.3.210/32"
+VPCCidrP = "10.249.0.0/16"
+Subnet1     = "10.249.250.0/24"
+Subnet2     = "10.249.249.0/24"
+AmiLinux     = "ami-942dd1f6"
+
